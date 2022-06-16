@@ -3,6 +3,7 @@
 
 class BohiquesThemeChild
 {
+    public $version = "v1.0.0";
 
     public static $options = [
         [
@@ -16,6 +17,7 @@ class BohiquesThemeChild
     {
         add_action('admin_menu', array('BohiquesThemeChild', 'menu'));
         add_action('wp_head', array('BohiquesThemeChild', 'gtranslate_flags'));
+        add_action('wp_ajax_bohiques_save', array('BohiquesThemeChild', 'save'));
     }
 
     public static function menu()
@@ -29,6 +31,16 @@ class BohiquesThemeChild
             "",
             6
         );
+    }
+
+    public static function save()
+    {
+        update_option($_POST["target"], json_decode($_POST["value"]));
+        echo json_encode([
+            "target" => $_POST["target"],
+            "value" => json_decode($_POST["value"])
+        ]);
+        wp_die();
     }
 
     public static function render_settings()

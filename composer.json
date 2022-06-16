@@ -1,7 +1,7 @@
 {
     
     "require": {
-        
+        "gitonomy/gitlib": "1.0"
     },
     "autoload": {
         "files":[
