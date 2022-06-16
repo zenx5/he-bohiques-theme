@@ -1,11 +1,12 @@
 {
     
     "require": {
-        "gitonomy/gitlib": "1.0"
+        "guzzlehttp/guzzle": "7.2"
     },
     "autoload": {
         "files":[
-            "bohiques-class/class-bohiques-theme-child.php"
+            "bohiques-class/class-bohiques-theme-child.php",
+            "bohiques-class/class-bohiques-update.php"
         ]
     }
 

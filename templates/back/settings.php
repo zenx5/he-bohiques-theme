@@ -1,18 +1,14 @@
 <?php
 
-use Gitonomy\Git\Repository;
 
-$repository = new Repository(WP_CONTENT_DIR . '/themes/he-bohiques-theme');
-
-// foreach ($repository->getReferences()->getBranches() as $branch) {
-//     echo '- '.$branch->getName().PHP_EOL;
-// }
-
-echo $repository->run('add', ['.']);
-
-echo WP_CONTENT_DIR . '/themes/he-bohiques-theme';
 
 ?>
+<div id="notif">
+    <div class="notice notice-success" id="saved">
+        <p>Se <span id="option_value"></span> <b id="option_name"></b></p>
+    </div>
+</div>
+
 
 <h3>Bohiques Settings</h3>
 
@@ -29,7 +25,7 @@ echo WP_CONTENT_DIR . '/themes/he-bohiques-theme';
         <tr>
             <th><?= $option['name'] ?></th>
             <td align="center">
-                <input type="checkbox" id="<?= $option['key'] ?>" name="<?= $option['key'] ?>" <?= get_option($option['key'], $option['default']) ? 'checked' : '' ?> />
+                <input type="checkbox" id="<?= $option['key'] ?>" data-tag="<?= $option['name'] ?>" name="<?= $option['key'] ?>" <?= get_option($option['key'], $option['default']) ? 'checked' : '' ?> />
             </td>
         </tr>
     <?php endforeach; ?>
@@ -38,19 +34,26 @@ echo WP_CONTENT_DIR . '/themes/he-bohiques-theme';
 
 <script>
     (function($) {
+        $('#saved').hide();
         $("input[type='checkbox']").change(function() {
             const value = $(this).is(':checked');
             const target = $(this).attr('name');
+            const name = $(this).data('tag');
             $.ajax({
                 method: 'post',
                 url: ajaxurl,
                 data: {
                     action: 'bohiques_save',
+                    name: name,
                     target: target,
                     value: value
                 },
                 success: response => {
-                    console.log(response)
+                    const json = JSON.parse(response)
+                    $('#saved').show();
+                    $('#option_value').text(json.value ? 'habilitado' : 'deshabilitado')
+                    $('#option_name').text(json.name)
+                    $('#saved').fadeOut(4000);
                 }
             })
         })
