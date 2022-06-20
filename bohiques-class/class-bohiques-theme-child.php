@@ -24,22 +24,20 @@ class BohiquesThemeChild
         define('DIR_THEME', WP_CONTENT_DIR . '/themes/he-bohiques-theme');
         add_action('admin_menu', array('BohiquesThemeChild', 'menu'));
         add_action('wp_head', array('BohiquesThemeChild', 'gtranslate_flags'));
-        if (!BohiquesUpdate::is_update()) {
-            add_action('admin_notices', array('BohiquesThemeChild', 'update_require'));
-        }
+
         add_action('wp_ajax_bohiques_save', array('BohiquesThemeChild', 'save'));
         add_action('wp_ajax_bohiques_update_token', array('BohiquesThemeChild', 'update_token'));
         add_action('wp_ajax_bohiques_create_client', array('BohiquesThemeChild', 'create_client'));
         add_action('wp_ajax_bohiques_update_client', array('BohiquesThemeChild', 'update_client'));
         add_action('wp_ajax_bohiques_delete_client', array('BohiquesThemeChild', 'delete_client'));
         add_action('rest_api_init', array('BohiquesThemeChild', 'custom_endpoints'));
+
+
         //add_action('wp_ajax_nopriv_bohiques_remote_connection', array('BohiquesThemeChild', 'remove_connection'));
+
         BohiquesDatabase::init();
     }
 
-    public static function update_require()
-    {
-    }
 
     public static function menu()
     {
@@ -116,11 +114,6 @@ class BohiquesThemeChild
             'methods' => 'put',
             'callback' => array('BohiquesThemeChild', 'update_options'),
         ));
-
-        register_rest_route('bohiques/v1', '/clients/(?P<id>\d+)', array(
-            'methods' => 'GET',
-            'callback' => array('BohiquesThemeChild', 'clients_get'),
-        ));
     }
 
     public static function update_options(WP_REST_Request $request)
@@ -157,17 +150,7 @@ class BohiquesThemeChild
         }
     }
 
-    public static function clients_get(WP_REST_Request $request)
-    {
-        //$id = $request['token'];
-        //$token = $request['token'];
 
-        // $params = $request;
-        // $response = new WP_REST_Response($params);
-        // $response->set_status(200);
-        // return $response;
-        return $request['id'];
-    }
 
     public static function render_settings()
     {

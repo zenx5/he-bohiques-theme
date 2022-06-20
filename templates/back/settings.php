@@ -29,7 +29,7 @@ if (isset($_GET['id'])) {
 
 
 ?>
-<h3>Bohiques Settings</h3>
+<h3>Bohiques Settings <?= get_option('get_time_test') ?></h3>
 <?php if (isset($clients[0])) : ?>
     <span style="display:block;margin-bottom: 20px;">
         <i>URL: <?= $clients[0]->url ?></i>

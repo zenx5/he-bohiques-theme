@@ -1,15 +1,14 @@
 {
-    
+    "name": "zenx5/he_bohiques_theme",
+    "description": "Theme child de elementor desarrollador por Bohiques",
+    "version": "1.0.0",
     "require": {
         "guzzlehttp/guzzle": "7.2"
     },
     "autoload": {
         "files":[
             "bohiques-class/class-bohiques-theme-child.php",
-            "bohiques-class/class-bohiques-update.php",
             "bohiques-class/class-bohiques-database.php"
         ]
     }
-
-
 }
