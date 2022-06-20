@@ -6,11 +6,7 @@ class BohiquesThemeChild
     public static $version = "v1.0.0";
 
     public static $options = [
-        [
-            "name" => "Automatic Update",
-            "key" => "bohiques_automatic_update",
-            "default" => false
-        ],
+
         [
             "name" => "G Translate Flags PR",
             "key" => "bohiques_gtranslate_flags_pr",
