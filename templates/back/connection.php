@@ -76,13 +76,13 @@ $connection_type = get_option('bohiques-theme-connection-type') ? get_option('bo
             </td>
             <td style="text-align: center;"><?= $client->token ?></td>
             <td style="text-align: center;">
-                <select>
+                <select class="status" data-id="<?= $client->id ?>">
                     <option value='active' <?= $client->status == 'active' ? 'selected' : '' ?>>Active</option>
                     <option value='deactive' <?= $client->status == 'deactive' ? 'selected' : '' ?>>Deactive</option>
                 </select>
             </td>
             <td style="display: flex; flex-direction:row;justify-content:center;">
-                <button data-id="<?= $client->id ?>" class="button admin-client" style="display:flex;align-items:center;margin:1px;">
+                <button data-id="<?= $client->id ?>" class="button admin-client admin-client-<?= $client->id ?>" style="display:flex;align-items:center;margin:1px;">
                     <i class="dashicons-before dashicons-admin-generic" style="display:flex"></i>
                 </button>
                 <button data-id="<?= $client->id ?>" class="button delete-client" style="display:flex;align-items:center;margin:1px;">
@@ -141,6 +141,11 @@ $connection_type = get_option('bohiques-theme-connection-type') ? get_option('bo
 
         $(".admin-client").click(function() {
             location.href = location.origin + location.pathname + "?page=bohiques-settings&id=" + $(this).data('id')
+        })
+
+        $(".status").change(function() {
+            const id = $(this).data("id");
+            $(".admin-client-" + id).attr("disabled", !$(".admin-client-" + id).attr("disabled"))
         })
 
         $(".delete-client").click(function() {

@@ -58,13 +58,14 @@ class BohiquesThemeChild
 
     public static function save()
     {
-        $value = (is_numeric($_POST['value']) || is_bool($_POST['value'])) ? json_decode($_POST["value"]) : $_POST["value"];
+
+        $value = esc_html((is_numeric($_POST['value']) || is_bool($_POST['value'])) ? json_decode($_POST["value"]) : $_POST["value"]);
 
         update_option($_POST["target"], $value);
         echo json_encode([
-            "target" => $_POST["target"],
+            "target" => esc_html($_POST["target"]),
             "value" => $value,
-            "name" => $_POST["name"]
+            "name" => esc_html($_POST["name"])
         ]);
         wp_die();
     }
@@ -80,9 +81,9 @@ class BohiquesThemeChild
     public static function create_client()
     {
         echo json_encode(BohiquesDatabase::create_clients([
-            "url" => $_POST["url"],
-            "token" => $_POST["token"],
-            "status" => $_POST["status"]
+            "url" => esc_url($_POST["url"]),
+            "token" => esc_html($_POST["token"]),
+            "status" => esc_html($_POST["status"])
         ]));
 
         wp_die();
@@ -114,29 +115,33 @@ class BohiquesThemeChild
 
     public static function update_options(WP_REST_Request $request)
     {
-        $token = $request['id'];
-
+        $token = esc_html($request['id']);
+        $status = esc_html($_POST['status']);
         if (true || $token == get_option("bohiques_token_access")) {
-            $value = json_decode($request['value']);
-            update_option($request["target"], $value);
-            return [
-                "target" => $request["target"],
-                "value" => $value,
-                "name" => $request["name"]
-            ];
+            if (in_array($status, ['active', 'deactive']) && $status == 'active') {
+                $value = json_decode(esc_html($request['value']));
+                update_option(esc_html($request["target"]), $value);
+                return [
+                    "target" => esc_html($request["target"]),
+                    "value" => $value,
+                    "name" => esc_html($request["name"])
+                ];
+            }
         }
     }
 
     public static function get_options(WP_REST_Request $request)
     {
-        $token = $request['id'];
-
+        $token = esc_html($request['id']);
+        $status = esc_html($_POST['status']);
         if (true || $token == get_option("bohiques_token_access")) {
-            return [
-                "code" => 202,
-                "token" => $token,
-                "data" => self::$options
-            ];
+            if (in_array($status, ['active', 'deactive']) && $status == 'active') {
+                return [
+                    "code" => 202,
+                    "token" => $token,
+                    "data" => self::$options
+                ];
+            }
         } else {
             return [
                 "code" => 404,
