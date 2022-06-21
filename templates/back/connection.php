@@ -82,7 +82,7 @@ $connection_type = get_option('bohiques-theme-connection-type') ? get_option('bo
                 </select>
             </td>
             <td style="display: flex; flex-direction:row;justify-content:center;">
-                <button data-id="<?= $client->id ?>" class="button admin-client admin-client-<?= $client->id ?>" style="display:flex;align-items:center;margin:1px;">
+                <button data-id="<?= $client->id ?>" class="button admin-client admin-client-<?= $client->id ?>" <?= $client->status == 'deactive' ? 'disabled' : '' ?> style="display:flex;align-items:center;margin:1px;">
                     <i class="dashicons-before dashicons-admin-generic" style="display:flex"></i>
                 </button>
                 <button data-id="<?= $client->id ?>" class="button delete-client" style="display:flex;align-items:center;margin:1px;">
@@ -145,7 +145,18 @@ $connection_type = get_option('bohiques-theme-connection-type') ? get_option('bo
 
         $(".status").change(function() {
             const id = $(this).data("id");
-            $(".admin-client-" + id).attr("disabled", !$(".admin-client-" + id).attr("disabled"))
+            const status = $(this).val();
+            const disabled = status == 'active' ? false : true;
+            $(".admin-client-" + id).attr("disabled", disabled);
+            $.ajax({
+                method: 'post',
+                url: ajaxurl,
+                data: {
+                    action: 'bohiques_update_client',
+                    id: id,
+                    status: status
+                }
+            })
         })
 
         $(".delete-client").click(function() {

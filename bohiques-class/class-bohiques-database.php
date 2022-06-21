@@ -34,6 +34,15 @@ class BohiquesDatabase
         }
     }
 
+    public static function update_client($id)
+    {
+        global $wpdb;
+        $status = $_POST['status'];
+        if (in_array($status, ['active', 'deactive'])) {
+            return $wpdb->get_results("UPDATE {$wpdb->prefix}bohiques_clients SET `status`='$status' WHERE `id`='$id' ");
+        }
+    }
+
     public static function create_clients($paiload)
     {
         global $wpdb;

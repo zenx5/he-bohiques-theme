@@ -97,6 +97,8 @@ class BohiquesThemeChild
 
     public static function update_client()
     {
+        BohiquesDatabase::update_client($_POST['id']);
+        wp_die();
     }
 
     public static function custom_endpoints()
